@@ -1,4 +1,5 @@
 import { Action, ActionPanel, Detail } from "@raycast/api";
+import { useLiveTranslation } from "../lib/live-translation";
 import { LANG_LABEL, type Lang } from "../lib/translate";
 
 /**
@@ -16,14 +17,9 @@ export function toMarkdown(text: string): string {
     .join("  \n");
 }
 
-interface Props {
-  source: string;
-  translation: string;
-  target: Lang;
-}
-
 /** Full-window, scrollable view of a translation — the Form's text area is too short for long text. */
-export function TranslationDetail({ source, translation, target }: Props) {
+export function TranslationDetail() {
+  const { source, translation, target, isLoading } = useLiveTranslation();
   const sourceLang: Lang = target === "ja" ? "en" : "ja";
   const markdown = [toMarkdown(translation), "---", `**原文（${LANG_LABEL[sourceLang]}）**`, toMarkdown(source)].join(
     "\n\n",
@@ -31,6 +27,7 @@ export function TranslationDetail({ source, translation, target }: Props) {
 
   return (
     <Detail
+      isLoading={isLoading}
       navigationTitle={`${LANG_LABEL[sourceLang]} → ${LANG_LABEL[target]}`}
       markdown={markdown}
       actions={

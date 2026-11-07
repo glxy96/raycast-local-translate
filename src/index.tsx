@@ -3,6 +3,7 @@ import { showFailureToast } from "@raycast/utils";
 import { useEffect, useRef, useState } from "react";
 import { TranslationDetail } from "./components/translation-detail";
 import { detectTargetLang } from "./lib/detect";
+import { updateLiveTranslation, useLiveTranslation } from "./lib/live-translation";
 import type { TranslateLaunchContext } from "./lib/quick-translate";
 import { readSourceText } from "./lib/source";
 import { LANG_LABEL, translate, TranslationError, type JapaneseForm, type Lang } from "./lib/translate";
@@ -16,8 +17,10 @@ export default function Command({ launchContext }: LaunchProps<{ launchContext?:
   const [text, setText] = useState(launchContext?.text ?? "");
   const [target, setTarget] = useState<Target>(launchContext?.target ?? "auto");
   const [form, setForm] = useState<JapaneseForm>(prefs.japaneseForm as JapaneseForm);
-  const [translation, setTranslation] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  // Translation lives in a shared store so the pushed full view keeps streaming too.
+  const { translation, isLoading } = useLiveTranslation();
+  const setTranslation = (value: string) => updateLiveTranslation({ translation: value });
+  const setIsLoading = (value: boolean) => updateLiveTranslation({ isLoading: value });
   // Raycast leaves no field focused after popping back from a pushed view, which makes
   // action shortcuts (⌘Y, ⌘K, …) dead until the user clicks a field. Refocus on pop.
   const translationRef = useRef<Form.TextArea>(null);
@@ -29,6 +32,8 @@ export default function Command({ launchContext }: LaunchProps<{ launchContext?:
   }, []);
 
   const resolved: Lang = target === "auto" ? detectTargetLang(text) : target;
+
+  useEffect(() => updateLiveTranslation({ source: text, target: resolved }), [text, resolved]);
 
   // Live translation: debounce keystrokes and cancel stale requests.
   useEffect(() => {
@@ -85,7 +90,7 @@ export default function Command({ launchContext }: LaunchProps<{ launchContext?:
             title="Show Translation in Full View"
             icon={Icon.Maximize}
             shortcut={Keyboard.Shortcut.Common.ToggleQuickLook}
-            target={<TranslationDetail source={text} translation={translation} target={resolved} />}
+            target={<TranslationDetail />}
             onPop={() => translationRef.current?.focus()}
           />
           <Action

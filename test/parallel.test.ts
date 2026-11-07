@@ -7,11 +7,18 @@ describe("buildParallel", () => {
   it("aligns by line when line counts match, ignoring blank lines", () => {
     const result = buildParallel("Intro.\n\n- a\n- b", "導入。\n\n- あ\n- い", headers, false);
     expect(result.unit).toBe("line");
-    expect(result.markdown).toBe(["| 原文 | 訳文 |", "| --- | --- |", "| Intro. | 導入。 |", "| - a | - あ |", "| - b | - い |"].join("\n"));
+    expect(result.markdown).toBe(
+      ["| 原文 | 訳文 |", "| --- | --- |", "| Intro. | 導入。 |", "| - a | - あ |", "| - b | - い |"].join("\n"),
+    );
   });
 
   it("falls back to paragraphs when lines re-flow", () => {
-    const result = buildParallel("A long\nwrapped sentence.\n\nSecond.", "折り返された長い文。\n\n二つ目。", headers, false);
+    const result = buildParallel(
+      "A long\nwrapped sentence.\n\nSecond.",
+      "折り返された長い文。\n\n二つ目。",
+      headers,
+      false,
+    );
     expect(result.unit).toBe("paragraph");
     expect(result.markdown).toContain("| A long wrapped sentence. | 折り返された長い文。 |");
     expect(result.markdown).toContain("| Second. | 二つ目。 |");

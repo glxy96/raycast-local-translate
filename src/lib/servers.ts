@@ -26,11 +26,28 @@ export function isPlamoModel(id: string): boolean {
   return /plamo-3-translate/i.test(id);
 }
 
+/**
+ * Accept what people naturally type: "localhost:1234" → "http://localhost:1234/v1".
+ * A path other than "/" is kept as is (e.g. "https://openrouter.ai/api/v1").
+ */
+export function normalizeEndpoint(input: string): string | undefined {
+  const trimmed = input.trim();
+  if (!trimmed) return undefined;
+  try {
+    const url = new URL(/^[a-z][a-z\d+.-]*:\/\//i.test(trimmed) ? trimmed : `http://${trimmed}`);
+    const path = url.pathname.replace(/\/+$/, "");
+    return `${url.origin}${path || "/v1"}`;
+  } catch {
+    return undefined;
+  }
+}
+
 /** Local servers plus the custom server from the preferences, if any. */
 export function getServers(): Server[] {
   const { customEndpoint, customApiKey } = getPreferenceValues<Preferences>();
   const servers = [...LOCAL_SERVERS];
-  const endpoint = customEndpoint?.trim().replace(/\/+$/, "");
+  const endpoint = normalizeEndpoint(customEndpoint ?? "");
+  // Skip it when it points at a server that is already probed.
   if (endpoint && !servers.some((s) => s.endpoint === endpoint)) {
     servers.push({ name: "Custom", endpoint, apiKey: customApiKey || undefined });
   }
@@ -86,9 +103,13 @@ export async function listAllModels(): Promise<ModelInfo[]> {
  * Pick a PLaMo 3 Translate model without any configuration:
  * a loaded one first (no load wait), then the smallest (fastest) available.
  */
-export async function findPlamoModel(): Promise<ModelInfo | undefined> {
+export function pickPlamoModel(models: ModelInfo[]): ModelInfo | undefined {
   const size = (id: string) => parseFloat(id.match(/translate-([\d.]+)b/i)?.[1] ?? "99");
-  return (await listAllModels())
+  return models
     .filter((m) => isPlamoModel(m.id))
     .sort((a, b) => Number(b.loaded ?? false) - Number(a.loaded ?? false) || size(a.id) - size(b.id))[0];
+}
+
+export async function findPlamoModel(): Promise<ModelInfo | undefined> {
+  return pickPlamoModel(await listAllModels());
 }

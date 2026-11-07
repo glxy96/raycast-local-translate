@@ -12,7 +12,7 @@ import {
 import { usePromise } from "@raycast/utils";
 import { useEffect, useState } from "react";
 import { getSelection, setSelection, type Selection } from "./lib/selection";
-import { findPlamoModel, getServers, isPlamoModel, listModels, type ModelInfo, type Server } from "./lib/servers";
+import { getServers, isPlamoModel, listModels, pickPlamoModel, type ModelInfo, type Server } from "./lib/servers";
 
 function sameSelection(a: Selection | undefined, b: Selection | undefined): boolean {
   return JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
@@ -30,7 +30,15 @@ export default function Command() {
     const lists = await Promise.all(servers.map(listModels));
     return new Map(servers.map((server, i) => [server.endpoint, lists[i]]));
   });
-  const { data: autoPick } = usePromise(findPlamoModel);
+  // Derived from the same listing, so opening this view probes each server only once.
+  const autoPick = models ? pickPlamoModel([...models.values()].flat()) : undefined;
+  const autoSubtitle = !autoPick
+    ? models
+      ? "見つかっていません"
+      : ""
+    : current
+      ? `選ぶと ${autoPick.id} を使います`
+      : `使用中: ${autoPick.id}`;
 
   async function choose(selection: Selection | undefined, label: string) {
     await setSelection(selection);
@@ -83,7 +91,7 @@ export default function Command() {
       <List.Section title="自動">
         <List.Item
           title="PLaMo 3 Translate を自動検出"
-          subtitle={autoPick ? `いまは ${autoPick.id}（${autoPick.server.name}）` : "見つかっていません"}
+          subtitle={autoSubtitle}
           icon={Icon.Wand}
           accessories={current ? [] : [checkmark(undefined)]}
           actions={

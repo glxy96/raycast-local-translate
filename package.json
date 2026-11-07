@@ -4,7 +4,7 @@
   "title": "Local Translate",
   "description": "日英・英日翻訳。ローカルの PLaMo 3 Translate を自動検出して使い、他の LLM や DeepL にも切り替えられる",
   "icon": "icon.png",
-  "author": "ginga",
+  "author": "glxy96",
   "license": "MIT",
   "categories": [
     "Productivity"

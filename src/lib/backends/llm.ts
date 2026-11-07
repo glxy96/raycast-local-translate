@@ -1,6 +1,7 @@
 import { getPreferenceValues } from "@raycast/api";
 import { chatCompletion } from "./openai-chat";
-import { TranslationError, type Backend, type JapaneseForm, type Lang } from "./types";
+import type { ModelTarget } from "./plamo";
+import type { Backend, JapaneseForm, Lang } from "./types";
 
 const LANGUAGE_NAME: Record<Lang, string> = { ja: "Japanese", en: "English" };
 
@@ -26,26 +27,22 @@ export function buildPrompt(template: string, target: Lang, form: JapaneseForm):
 }
 
 /** Any OpenAI-compatible chat model: Ollama, other LM Studio models, OpenAI, OpenRouter, … */
-export function createLlmBackend(): Backend {
-  const prefs = getPreferenceValues<Preferences>();
-  const model = prefs.llmModel?.trim();
+export function createLlmBackend({ endpoint, model, apiKey }: ModelTarget): Backend {
+  const { llmPrompt } = getPreferenceValues<Preferences>();
   return {
-    name: model ? `LLM (${model})` : "LLM",
-    translate: async ({ text, target, form, signal, onPartial }) => {
-      if (!model)
-        throw new TranslationError("LLM のモデルが未設定です", "拡張機能の設定で LLM: Model を入力してください");
-      return chatCompletion({
-        endpoint: prefs.llmEndpoint || "http://localhost:1234/v1",
-        apiKey: prefs.llmApiKey || undefined,
+    name: model,
+    translate: ({ text, target, form, signal, onPartial }) =>
+      chatCompletion({
+        endpoint,
+        apiKey,
         model,
         messages: [
-          { role: "system", content: buildPrompt(prefs.llmPrompt || DEFAULT_PROMPT, target, form) },
+          { role: "system", content: buildPrompt(llmPrompt || DEFAULT_PROMPT, target, form) },
           { role: "user", content: text },
         ],
         signal,
         onPartial,
-        connectionHint: "サーバーが起動しているか、LLM: Endpoint が正しいか確認してください",
-      });
-    },
+        connectionHint: "サーバーが起動しているか確認してください",
+      }),
   };
 }

@@ -2,7 +2,7 @@
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "plamocast",
   "title": "Plamocast",
-  "description": "Japanese ⇄ English translation with swappable backends: local PLaMo 3 Translate (default), any OpenAI-compatible LLM, or DeepL",
+  "description": "Japanese ⇄ English translation with local PLaMo 3 Translate (auto-detected), any OpenAI-compatible LLM, or DeepL",
   "icon": "icon.png",
   "author": "ginga",
   "license": "MIT",
@@ -15,6 +15,13 @@
       "title": "Translate",
       "subtitle": "Plamocast",
       "description": "Translate text between Japanese and English with live preview",
+      "mode": "view"
+    },
+    {
+      "name": "choose-model",
+      "title": "Choose Model",
+      "subtitle": "Plamocast",
+      "description": "Pick the translation model from local servers (LM Studio, Ollama), a custom server, or DeepL",
       "mode": "view"
     },
     {
@@ -65,78 +72,32 @@
   ],
   "preferences": [
     {
-      "name": "backend",
-      "type": "dropdown",
-      "title": "Backend",
-      "description": "Translation service to use",
-      "data": [
-        {
-          "title": "PLaMo 3 Translate (local)",
-          "value": "plamo"
-        },
-        {
-          "title": "OpenAI-compatible LLM",
-          "value": "llm"
-        },
-        {
-          "title": "DeepL",
-          "value": "deepl"
-        }
-      ],
-      "default": "plamo",
-      "required": false
-    },
-    {
-      "name": "plamoEndpoint",
+      "name": "customEndpoint",
       "type": "textfield",
-      "title": "PLaMo: Endpoint",
-      "description": "OpenAI-compatible base URL serving PLaMo 3 Translate (GGUF). LM Studio: http://localhost:1234/v1, Ollama: http://localhost:11434/v1",
-      "default": "http://localhost:1234/v1",
+      "title": "Custom Server: Endpoint",
+      "description": "Extra OpenAI-compatible server to list in Choose Model (e.g. https://api.openai.com/v1, or a server on another machine). LM Studio (localhost:1234) and Ollama (localhost:11434) are detected automatically.",
+      "placeholder": "https://api.openai.com/v1",
       "required": false
     },
     {
-      "name": "plamoModel",
-      "type": "textfield",
-      "title": "PLaMo: Model",
-      "description": "Model identifier of PLaMo 3 Translate on the server",
-      "default": "plamo-3-translate-2b",
-      "required": false
-    },
-    {
-      "name": "llmEndpoint",
-      "type": "textfield",
-      "title": "LLM: Endpoint",
-      "description": "OpenAI-compatible base URL (LM Studio, Ollama, OpenAI, OpenRouter, …)",
-      "default": "http://localhost:1234/v1",
-      "required": false
-    },
-    {
-      "name": "llmModel",
-      "type": "textfield",
-      "title": "LLM: Model",
-      "description": "Model identifier, e.g. gemma-4-26b-a4b-it, gpt-4.1-mini",
-      "placeholder": "model identifier",
-      "required": false
-    },
-    {
-      "name": "llmApiKey",
+      "name": "customApiKey",
       "type": "password",
-      "title": "LLM: API Key",
-      "description": "Sent as a Bearer token. Leave empty for local servers.",
-      "required": false
-    },
-    {
-      "name": "llmPrompt",
-      "type": "textfield",
-      "title": "LLM: System Prompt",
-      "description": "Optional custom system prompt. {{target}} becomes Japanese/English, {{style}} the Japanese style instruction. Empty uses the built-in prompt.",
+      "title": "Custom Server: API Key",
+      "description": "Sent as a Bearer token to the custom server only",
       "required": false
     },
     {
       "name": "deeplApiKey",
       "type": "password",
       "title": "DeepL: API Key",
-      "description": "DeepL API authentication key (Free keys end with :fx)",
+      "description": "Enables DeepL in Choose Model (Free keys end with :fx)",
+      "required": false
+    },
+    {
+      "name": "llmPrompt",
+      "type": "textfield",
+      "title": "LLM: System Prompt",
+      "description": "Optional custom system prompt for general LLMs (not PLaMo). {{target}} becomes Japanese/English, {{style}} the Japanese style instruction. Empty uses the built-in prompt.",
       "required": false
     },
     {

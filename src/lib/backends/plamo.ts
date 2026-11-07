@@ -1,4 +1,3 @@
-import { getPreferenceValues } from "@raycast/api";
 import { chatCompletion } from "./openai-chat";
 import type { Backend, JapaneseForm, Lang } from "./types";
 
@@ -18,15 +17,20 @@ function buildSystemMessage(target: Lang, form: JapaneseForm): string {
   return lines.join("\n");
 }
 
-export function createPlamoBackend(): Backend {
-  const prefs = getPreferenceValues<Preferences>();
-  const endpoint = prefs.plamoEndpoint || "http://localhost:1234/v1";
+export interface ModelTarget {
+  endpoint: string;
+  model: string;
+  apiKey?: string;
+}
+
+export function createPlamoBackend({ endpoint, model, apiKey }: ModelTarget): Backend {
   return {
-    name: "PLaMo 3 Translate",
+    name: model,
     translate: ({ text, target, form, signal, onPartial }) =>
       chatCompletion({
         endpoint,
-        model: prefs.plamoModel || "plamo-3-translate-2b",
+        apiKey,
+        model,
         messages: [
           { role: "system", content: buildSystemMessage(target, form) },
           { role: "user", content: text },

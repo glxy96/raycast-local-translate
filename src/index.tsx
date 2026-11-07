@@ -25,6 +25,13 @@ export default function Command({ launchContext }: LaunchProps<{ launchContext?:
   // action shortcuts (⌘Y, ⌘K, …) dead until the user clicks a field. Refocus on pop.
   const translationRef = useRef<Form.TextArea>(null);
 
+  const [backendName, setBackendName] = useState("");
+  useEffect(() => {
+    getBackend()
+      .then((backend) => setBackendName(backend.name))
+      .catch(() => setBackendName("モデル未検出"));
+  }, []);
+
   // Prefill from the selection / clipboard unless another command handed us the text.
   useEffect(() => {
     if (launchContext?.text) return;
@@ -78,12 +85,11 @@ export default function Command({ launchContext }: LaunchProps<{ launchContext?:
   }
 
   const sourceLang: Lang = resolved === "ja" ? "en" : "ja";
-  const backendName = getBackend().name;
 
   return (
     <Form
       isLoading={isLoading}
-      navigationTitle={`Translate — ${backendName}`}
+      navigationTitle={backendName ? `Translate — ${backendName}` : "Translate"}
       actions={
         <ActionPanel>
           <Action.CopyToClipboard title="Copy Translation" content={translation} />

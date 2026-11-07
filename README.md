@@ -45,7 +45,18 @@ no-view コマンドの結果は設定の **翻訳後の動作**（コピー / �
 
 ## セットアップ
 
-### 1. モデルを LM Studio に入れる（PLaMo を使う場合）
+### AI エージェントに任せる場合
+
+Claude Code などの AI エージェントに以下を貼る。
+
+```
+https://github.com/glxy96/raycast-local-translate を導入してください。
+README のセットアップ手順に従ってください。LM Studio と PLaMo 3 Translate（https://huggingface.co/pfnet/plamo-3-translate-2b-GGUF の Q4_K_M）が必要なので、未導入であれば導入してください。
+```
+
+### 手で入れる場合
+
+#### 1. モデルを LM Studio に入れる（PLaMo を使う場合）
 
 ```bash
 lms get "https://huggingface.co/pfnet/plamo-3-translate-2b-GGUF@Q4_K_M" -y
@@ -60,7 +71,7 @@ MLX 版ではなく **GGUF 版** を使う。
 
 サイズの選択（参考: M4 / 16GB での測定）: 2B は常駐約 2.2GB・1 文 0.3〜1 秒で、`⌘Y` のような記号混じりの技術文も正しく訳す。0.8B は約 0.6GB・0.1〜0.3 秒と軽いが、記号の前後で訳が崩れることがある。複数サイズを入れている場合は Choose Model で選ぶ。
 
-### 2. 拡張機能を Raycast に読み込む
+#### 2. 拡張機能を Raycast に読み込む
 
 Raycast Store には出していないので、ソースから入れる。Node.js 22 以上が必要。
 

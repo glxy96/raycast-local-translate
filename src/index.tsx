@@ -6,7 +6,7 @@ import { detectTargetLang } from "./lib/detect";
 import { updateLiveTranslation, useLiveTranslation } from "./lib/live-translation";
 import type { TranslateLaunchContext } from "./lib/quick-translate";
 import { readSourceText } from "./lib/source";
-import { LANG_LABEL, translate, TranslationError, type JapaneseForm, type Lang } from "./lib/translate";
+import { getBackend, LANG_LABEL, translate, TranslationError, type JapaneseForm, type Lang } from "./lib/translate";
 
 type Target = Lang | "auto";
 
@@ -50,7 +50,7 @@ export default function Command({ launchContext }: LaunchProps<{ launchContext?:
           target: resolved,
           form,
           signal: controller.signal,
-          // Stream tokens into the field: first token arrives in <0.5s even when the full text takes seconds.
+          // Stream into the field so long translations start appearing right away.
           onPartial: (partial) => !controller.signal.aborted && setTranslation(partial),
         });
         setTranslation(result);
@@ -78,10 +78,12 @@ export default function Command({ launchContext }: LaunchProps<{ launchContext?:
   }
 
   const sourceLang: Lang = resolved === "ja" ? "en" : "ja";
+  const backendName = getBackend().name;
 
   return (
     <Form
       isLoading={isLoading}
+      navigationTitle={`Translate — ${backendName}`}
       actions={
         <ActionPanel>
           <Action.CopyToClipboard title="Copy Translation" content={translation} />

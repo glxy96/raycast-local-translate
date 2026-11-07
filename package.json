@@ -2,7 +2,7 @@
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "plamocast",
   "title": "Plamocast",
-  "description": "Local Japanese ⇄ English translation powered by PLaMo 3 Translate running on LM Studio",
+  "description": "Japanese ⇄ English translation with swappable backends: local PLaMo 3 Translate (default), any OpenAI-compatible LLM, or DeepL",
   "icon": "icon.png",
   "author": "ginga",
   "license": "MIT",
@@ -65,19 +65,78 @@
   ],
   "preferences": [
     {
-      "name": "endpoint",
+      "name": "backend",
+      "type": "dropdown",
+      "title": "Backend",
+      "description": "Translation service to use",
+      "data": [
+        {
+          "title": "PLaMo 3 Translate (local)",
+          "value": "plamo"
+        },
+        {
+          "title": "OpenAI-compatible LLM",
+          "value": "llm"
+        },
+        {
+          "title": "DeepL",
+          "value": "deepl"
+        }
+      ],
+      "default": "plamo",
+      "required": false
+    },
+    {
+      "name": "plamoEndpoint",
       "type": "textfield",
-      "title": "API Endpoint",
-      "description": "OpenAI-compatible base URL of the LM Studio server",
+      "title": "PLaMo: Endpoint",
+      "description": "OpenAI-compatible base URL serving PLaMo 3 Translate (GGUF). LM Studio: http://localhost:1234/v1, Ollama: http://localhost:11434/v1",
       "default": "http://localhost:1234/v1",
       "required": false
     },
     {
-      "name": "model",
+      "name": "plamoModel",
       "type": "textfield",
-      "title": "Model Identifier",
-      "description": "Identifier of the PLaMo 3 Translate model loaded in LM Studio",
+      "title": "PLaMo: Model",
+      "description": "Model identifier of PLaMo 3 Translate on the server",
       "default": "plamo-3-translate-2b",
+      "required": false
+    },
+    {
+      "name": "llmEndpoint",
+      "type": "textfield",
+      "title": "LLM: Endpoint",
+      "description": "OpenAI-compatible base URL (LM Studio, Ollama, OpenAI, OpenRouter, …)",
+      "default": "http://localhost:1234/v1",
+      "required": false
+    },
+    {
+      "name": "llmModel",
+      "type": "textfield",
+      "title": "LLM: Model",
+      "description": "Model identifier, e.g. gemma-4-26b-a4b-it, gpt-4.1-mini",
+      "placeholder": "model identifier",
+      "required": false
+    },
+    {
+      "name": "llmApiKey",
+      "type": "password",
+      "title": "LLM: API Key",
+      "description": "Sent as a Bearer token. Leave empty for local servers.",
+      "required": false
+    },
+    {
+      "name": "llmPrompt",
+      "type": "textfield",
+      "title": "LLM: System Prompt",
+      "description": "Optional custom system prompt. {{target}} becomes Japanese/English, {{style}} the Japanese style instruction. Empty uses the built-in prompt.",
+      "required": false
+    },
+    {
+      "name": "deeplApiKey",
+      "type": "password",
+      "title": "DeepL: API Key",
+      "description": "DeepL API authentication key (Free keys end with :fx)",
       "required": false
     },
     {

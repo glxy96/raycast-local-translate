@@ -18,6 +18,15 @@ no-view コマンドの結果は設定の **翻訳後の動作**（コピー / �
 
 **何も設定しなくても動く。** LM Studio（`localhost:1234`）と Ollama（`localhost:11434`）を自動で探し、PLaMo 3 Translate が見つかればそれを使う（ロード済みのものを優先、なければ小さい＝速いもの）。
 
+### 自動で探すサーバー
+
+| サーバー | 見に行く場所 |
+| --- | --- |
+| LM Studio | `http://localhost:1234/v1` |
+| Ollama | `http://localhost:11434/v1` |
+
+どちらも**既定のポート**。ポートを変えている場合（LM Studio のサーバー設定や `lms server start --port`、Ollama の `OLLAMA_HOST`）や、別マシン・クラウドのサーバーを使う場合は、設定の **カスタムサーバー: エンドポイント** に手で入れる。`localhost:5678` のように `http://` と `/v1` は省略できる。
+
 別のモデルにしたいときは **Choose Model** コマンドを開く。
 
 - ローカルのサーバーにあるモデルが一覧で出る（LM Studio はロード状態も表示、埋め込みモデルは除外）

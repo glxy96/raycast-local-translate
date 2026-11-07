@@ -1,0 +1,165 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "plamocast",
+  "title": "Plamocast",
+  "description": "Local Japanese ⇄ English translation powered by PLaMo 3 Translate running on LM Studio",
+  "icon": "icon.png",
+  "author": "ginga",
+  "license": "MIT",
+  "categories": [
+    "Productivity"
+  ],
+  "commands": [
+    {
+      "name": "index",
+      "title": "Translate",
+      "subtitle": "Plamocast",
+      "description": "Translate text between Japanese and English with live preview",
+      "mode": "view"
+    },
+    {
+      "name": "translate-auto",
+      "title": "Translate Auto (JA ⇄ EN)",
+      "subtitle": "Plamocast",
+      "description": "Detect the language of the selected text and translate Japanese → English or English → Japanese",
+      "mode": "no-view",
+      "arguments": [
+        {
+          "name": "text",
+          "type": "text",
+          "required": false,
+          "placeholder": "Text"
+        }
+      ]
+    },
+    {
+      "name": "translate-to-japanese",
+      "title": "Translate into Japanese",
+      "subtitle": "Plamocast",
+      "description": "Translate the selected text into Japanese",
+      "mode": "no-view",
+      "arguments": [
+        {
+          "name": "text",
+          "type": "text",
+          "required": false,
+          "placeholder": "Text"
+        }
+      ]
+    },
+    {
+      "name": "translate-to-english",
+      "title": "Translate into English",
+      "subtitle": "Plamocast",
+      "description": "Translate the selected text into English",
+      "mode": "no-view",
+      "arguments": [
+        {
+          "name": "text",
+          "type": "text",
+          "required": false,
+          "placeholder": "Text"
+        }
+      ]
+    }
+  ],
+  "preferences": [
+    {
+      "name": "endpoint",
+      "type": "textfield",
+      "title": "API Endpoint",
+      "description": "OpenAI-compatible base URL of the LM Studio server",
+      "default": "http://localhost:1234/v1",
+      "required": false
+    },
+    {
+      "name": "model",
+      "type": "textfield",
+      "title": "Model Identifier",
+      "description": "Identifier of the PLaMo 3 Translate model loaded in LM Studio",
+      "default": "plamo-3-translate-0.8b",
+      "required": false
+    },
+    {
+      "name": "source",
+      "type": "dropdown",
+      "title": "Preferred Source",
+      "description": "Where to read the text from. Falls back to the other source when empty.",
+      "data": [
+        {
+          "title": "Selected Text",
+          "value": "selected"
+        },
+        {
+          "title": "Clipboard",
+          "value": "clipboard"
+        }
+      ],
+      "default": "selected",
+      "required": false
+    },
+    {
+      "name": "onTranslateAction",
+      "type": "dropdown",
+      "title": "On Translation Action",
+      "description": "What the quick (no-view) commands do with the translation",
+      "data": [
+        {
+          "title": "Copy to Clipboard",
+          "value": "clipboard"
+        },
+        {
+          "title": "Paste in Frontmost App",
+          "value": "paste"
+        },
+        {
+          "title": "View in Raycast",
+          "value": "view"
+        }
+      ],
+      "default": "clipboard",
+      "required": false
+    },
+    {
+      "name": "japaneseForm",
+      "type": "dropdown",
+      "title": "Japanese Style",
+      "description": "Default style for Japanese output",
+      "data": [
+        {
+          "title": "Model Default",
+          "value": "default"
+        },
+        {
+          "title": "Polite (です・ます)",
+          "value": "polite"
+        },
+        {
+          "title": "Plain (だ・である)",
+          "value": "plain"
+        }
+      ],
+      "default": "default",
+      "required": false
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^2.11.1",
+    "@raycast/utils": "^2.3.3"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^2.2.0",
+    "@types/node": "26.6.5",
+    "@types/react": "19.3.0",
+    "eslint": "^10.14.0",
+    "prettier": "^3.9.10",
+    "typescript": "~6.0.3"
+  },
+  "scripts": {
+    "build": "ray build",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "typecheck": "tsc --noEmit"
+  }
+}

@@ -116,9 +116,7 @@ API キーは Raycast のパスワード型設定として保存される（Rayc
 
 ## 謝辞
 
-DeepL で翻訳する Raycast 拡張 [Deepcast](https://www.raycast.com/mooxl/deepcast) を愛用していて、あの手軽さをローカルの LLM でも味わいたくて作った。選択したテキストをホットキー一発で訳す流れや、入力元・翻訳後の動作といった設定の考え方は、Deepcast から多くを学ばせてもらっている。素晴らしい拡張を作り続けている作者と協力者の皆さんに感謝したい。
-
-なお、この拡張は Deepcast とは別のプロジェクトなので、不具合や要望はこのリポジトリの Issue に寄せてほしい。
+普段使っている [Deepcast](https://www.raycast.com/mooxl/deepcast) がとても便利なので、その使い勝手を参考に作りました。Deepcast とは別のプロジェクトです。
 
 ## License
 

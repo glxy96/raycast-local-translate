@@ -1,4 +1,4 @@
-# Plamocast
+# Local Translate
 
 Raycast から日英・英日翻訳する拡張機能。既定ではローカルの [PLaMo 3 Translate](https://huggingface.co/collections/pfnet/plamo-3-translate)（LM Studio / Ollama）を自動検出して使い、Choose Model で他の LLM や DeepL に切り替えられる。[Deepcast](https://www.raycast.com/drwmrd/deepcast) のローカル LLM 版。
 
@@ -58,7 +58,7 @@ npm install
 npm run dev   # Raycast に開発版として登録される。登録後は Ctrl+C で止めても残る
 ```
 
-Raycast Settings → Extensions → Plamocast で各コマンドにホットキーを割り当てる。
+Raycast Settings → Extensions → Local Translate で各コマンドにホットキーを割り当てる。
 
 ### 開発
 

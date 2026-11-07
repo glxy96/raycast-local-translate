@@ -92,22 +92,22 @@ export default function Command({ launchContext }: LaunchProps<{ launchContext?:
       navigationTitle={backendName ? `Translate — ${backendName}` : "Translate"}
       actions={
         <ActionPanel>
-          <Action.CopyToClipboard title="Copy Translation" content={translation} />
-          <Action.Paste title="Paste Translation" content={translation} />
+          <Action.CopyToClipboard title="訳文をコピー" content={translation} />
+          <Action.Paste title="訳文をペースト" content={translation} />
           <Action.Push
-            title="Show Translation in Full View"
+            title="全画面で表示"
             icon={Icon.Maximize}
             shortcut={Keyboard.Shortcut.Common.ToggleQuickLook}
             target={<TranslationDetail />}
             onPop={() => translationRef.current?.focus()}
           />
           <Action
-            title="Swap Source and Translation"
+            title="原文と訳文を入れ替え"
             icon={Icon.Switch}
             shortcut={{ modifiers: ["cmd", "opt"], key: "s" }}
             onAction={swap}
           />
-          <Action.CopyToClipboard title="Copy Source Text" content={text} shortcut={Keyboard.Shortcut.Common.Copy} />
+          <Action.CopyToClipboard title="原文をコピー" content={text} shortcut={Keyboard.Shortcut.Common.Copy} />
         </ActionPanel>
       }
     >

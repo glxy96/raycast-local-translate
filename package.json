@@ -1,10 +1,10 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
-  "name": "plamocast",
-  "title": "Plamocast",
-  "description": "Japanese ⇄ English translation with local PLaMo 3 Translate (auto-detected), any OpenAI-compatible LLM, or DeepL",
+  "name": "local-translate",
+  "title": "Local Translate",
+  "description": "日英・英日翻訳。ローカルの PLaMo 3 Translate を自動検出して使い、他の LLM や DeepL にも切り替えられる",
   "icon": "icon.png",
-  "author": "ginga",
+  "author": "glxy96",
   "license": "MIT",
   "categories": [
     "Productivity"
@@ -13,59 +13,59 @@
     {
       "name": "index",
       "title": "Translate",
-      "subtitle": "Plamocast",
-      "description": "Translate text between Japanese and English with live preview",
+      "subtitle": "Local Translate",
+      "description": "日英・英日をライブ翻訳するフォーム",
       "mode": "view"
     },
     {
       "name": "choose-model",
       "title": "Choose Model",
-      "subtitle": "Plamocast",
-      "description": "Pick the translation model from local servers (LM Studio, Ollama), a custom server, or DeepL",
+      "subtitle": "Local Translate",
+      "description": "翻訳に使うモデルを選ぶ（LM Studio / Ollama / カスタムサーバー / DeepL）",
       "mode": "view"
     },
     {
       "name": "translate-auto",
       "title": "Translate Auto (JA ⇄ EN)",
-      "subtitle": "Plamocast",
-      "description": "Detect the language of the selected text and translate Japanese → English or English → Japanese",
+      "subtitle": "Local Translate",
+      "description": "選択テキストの言語を判定して日→英 / 英→日に翻訳",
       "mode": "no-view",
       "arguments": [
         {
           "name": "text",
           "type": "text",
           "required": false,
-          "placeholder": "Text"
+          "placeholder": "テキスト"
         }
       ]
     },
     {
       "name": "translate-to-japanese",
       "title": "Translate into Japanese",
-      "subtitle": "Plamocast",
-      "description": "Translate the selected text into Japanese",
+      "subtitle": "Local Translate",
+      "description": "選択テキストを日本語に翻訳",
       "mode": "no-view",
       "arguments": [
         {
           "name": "text",
           "type": "text",
           "required": false,
-          "placeholder": "Text"
+          "placeholder": "テキスト"
         }
       ]
     },
     {
       "name": "translate-to-english",
       "title": "Translate into English",
-      "subtitle": "Plamocast",
-      "description": "Translate the selected text into English",
+      "subtitle": "Local Translate",
+      "description": "選択テキストを英語に翻訳",
       "mode": "no-view",
       "arguments": [
         {
           "name": "text",
           "type": "text",
           "required": false,
-          "placeholder": "Text"
+          "placeholder": "テキスト"
         }
       ]
     }
@@ -74,44 +74,44 @@
     {
       "name": "customEndpoint",
       "type": "textfield",
-      "title": "Custom Server: Endpoint",
-      "description": "Extra OpenAI-compatible server to list in Choose Model (e.g. https://api.openai.com/v1, or a server on another machine). LM Studio (localhost:1234) and Ollama (localhost:11434) are detected automatically.",
+      "title": "カスタムサーバー: エンドポイント",
+      "description": "Choose Model に追加で出す OpenAI 互換サーバー（例: https://api.openai.com/v1、別マシンのサーバー）。LM Studio（localhost:1234）と Ollama（localhost:11434）は自動で検出される",
       "placeholder": "https://api.openai.com/v1",
       "required": false
     },
     {
       "name": "customApiKey",
       "type": "password",
-      "title": "Custom Server: API Key",
-      "description": "Sent as a Bearer token to the custom server only",
+      "title": "カスタムサーバー: API キー",
+      "description": "カスタムサーバーにだけ Bearer トークンとして送る",
       "required": false
     },
     {
       "name": "deeplApiKey",
       "type": "password",
-      "title": "DeepL: API Key",
-      "description": "Enables DeepL in Choose Model (Free keys end with :fx)",
+      "title": "DeepL: API キー",
+      "description": "入力すると Choose Model で DeepL を選べる（Free プランのキーは :fx で終わる）",
       "required": false
     },
     {
       "name": "llmPrompt",
       "type": "textfield",
-      "title": "LLM: System Prompt",
-      "description": "Optional custom system prompt for general LLMs (not PLaMo). {{target}} becomes Japanese/English, {{style}} the Japanese style instruction. Empty uses the built-in prompt.",
+      "title": "LLM: システムプロンプト",
+      "description": "汎用 LLM（PLaMo 以外）向けのプロンプトを差し替える。{{target}} は Japanese / English、{{style}} は文体の指示に置き換わる。空なら組み込みのプロンプト",
       "required": false
     },
     {
       "name": "source",
       "type": "dropdown",
-      "title": "Preferred Source",
-      "description": "Where to read the text from. Falls back to the other source when empty.",
+      "title": "入力元",
+      "description": "翻訳するテキストの読み取り元。空のときはもう一方を使う",
       "data": [
         {
-          "title": "Selected Text",
+          "title": "選択テキスト",
           "value": "selected"
         },
         {
-          "title": "Clipboard",
+          "title": "クリップボード",
           "value": "clipboard"
         }
       ],
@@ -121,19 +121,19 @@
     {
       "name": "onTranslateAction",
       "type": "dropdown",
-      "title": "On Translation Action",
-      "description": "What the quick (no-view) commands do with the translation",
+      "title": "翻訳後の動作",
+      "description": "Translate Auto / into Japanese / into English で翻訳した結果をどうするか",
       "data": [
         {
-          "title": "Copy to Clipboard",
+          "title": "クリップボードにコピー",
           "value": "clipboard"
         },
         {
-          "title": "Paste in Frontmost App",
+          "title": "最前面のアプリにペースト（選択範囲を置き換え）",
           "value": "paste"
         },
         {
-          "title": "View in Raycast",
+          "title": "Raycast で表示",
           "value": "view"
         }
       ],
@@ -143,19 +143,19 @@
     {
       "name": "japaneseForm",
       "type": "dropdown",
-      "title": "Japanese Style",
-      "description": "Default style for Japanese output",
+      "title": "日本語の文体",
+      "description": "日本語に翻訳するときの既定の文体",
       "data": [
         {
-          "title": "Model Default",
+          "title": "モデルに任せる",
           "value": "default"
         },
         {
-          "title": "Polite (です・ます)",
+          "title": "です・ます",
           "value": "polite"
         },
         {
-          "title": "Plain (だ・である)",
+          "title": "だ・である",
           "value": "plain"
         }
       ],
@@ -173,13 +173,15 @@
     "@types/react": "19.3.0",
     "eslint": "^10.14.0",
     "prettier": "^3.9.10",
-    "typescript": "~6.0.3"
+    "typescript": "~6.0.3",
+    "vitest": "^5.1.0"
   },
   "scripts": {
     "build": "ray build",
     "dev": "ray develop",
-    "fix-lint": "ray lint --fix",
-    "lint": "ray lint",
-    "typecheck": "tsc --noEmit"
+    "fix-lint": "eslint . --fix && prettier --write .",
+    "lint": "eslint . && prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   }
 }

@@ -101,6 +101,13 @@ export default function Command({ launchContext }: LaunchProps<{ launchContext?:
             target={<TranslationDetail />}
             onPop={() => translationRef.current?.focus()}
           />
+          <Action.Push
+            title="対訳で表示"
+            icon={Icon.AppWindowSidebarLeft}
+            shortcut={{ modifiers: ["cmd", "shift"], key: "y" }}
+            target={<TranslationDetail initialLayout="parallel" />}
+            onPop={() => translationRef.current?.focus()}
+          />
           <Action
             title="原文と訳文を入れ替え"
             icon={Icon.Switch}
@@ -116,7 +123,7 @@ export default function Command({ launchContext }: LaunchProps<{ launchContext?:
         id="translation"
         ref={translationRef}
         title="訳文"
-        info="⌘Y で全画面表示"
+        info="⌘Y で全画面、⌘⇧Y で対訳表示"
         value={translation}
         onChange={setTranslation}
       />

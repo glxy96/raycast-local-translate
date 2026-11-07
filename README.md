@@ -1,6 +1,6 @@
 # Local Translate
 
-Raycast から日英・英日翻訳する拡張機能。既定ではローカルの [PLaMo 3 Translate](https://huggingface.co/collections/pfnet/plamo-3-translate)（LM Studio / Ollama）を自動検出して使い、Choose Model で他の LLM や DeepL に切り替えられる。[Deepcast](https://www.raycast.com/drwmrd/deepcast) のローカル LLM 版。
+Raycast から日英・英日翻訳する拡張機能。既定ではローカルの [PLaMo 3 Translate](https://huggingface.co/collections/pfnet/plamo-3-translate)（LM Studio / Ollama）を自動検出して使い、Choose Model で他の LLM や DeepL に切り替えられる。
 
 ## コマンド
 
@@ -113,6 +113,10 @@ API キーは Raycast のパスワード型設定として保存される（Rayc
 
 - **「LM Studio に接続できません」**: `lms server start`。常用するなら LM Studio の設定でログイン時にサーバーを自動起動させる
 - **「PLaMo 3 Translate が見つかりません」**: LM Studio が起動していて、PLaMo 3 Translate がダウンロード済みか確認する。モデルがアンロードされていても、LM Studio の JIT ロードが有効なら初回リクエストで自動ロードされる（数秒かかる）
+
+## 謝辞
+
+普段使っている [Deepcast](https://www.raycast.com/mooxl/deepcast) がとても便利なので、その使い勝手を参考に作りました。Deepcast とは別のプロジェクトです。
 
 ## License
 

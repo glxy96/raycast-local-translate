@@ -41,7 +41,14 @@ export default function Command({ launchContext }: LaunchProps<{ launchContext?:
     const timer = setTimeout(async () => {
       setIsLoading(true);
       try {
-        setTranslation(await translate(text, { target: resolved, form, signal: controller.signal }));
+        const result = await translate(text, {
+          target: resolved,
+          form,
+          signal: controller.signal,
+          // Stream tokens into the field: first token arrives in <0.5s even when the full text takes seconds.
+          onPartial: (partial) => !controller.signal.aborted && setTranslation(partial),
+        });
+        setTranslation(result);
       } catch (error) {
         if (controller.signal.aborted) return;
         await showFailureToast(error, {

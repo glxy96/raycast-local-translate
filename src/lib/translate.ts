@@ -39,7 +39,7 @@ function buildSystemMessage(target: Lang, form: JapaneseForm): string {
 export async function translate(text: string, { target, form, signal }: TranslateOptions): Promise<string> {
   const prefs = getPreferenceValues<Preferences>();
   const endpoint = (prefs.endpoint || "http://localhost:1234/v1").replace(/\/+$/, "");
-  const model = prefs.model || "plamo-3-translate-0.8b";
+  const model = prefs.model || "plamo-3-translate-2b";
 
   let res: Response;
   try {

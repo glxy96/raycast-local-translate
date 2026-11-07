@@ -77,7 +77,7 @@
       "type": "textfield",
       "title": "Model Identifier",
       "description": "Identifier of the PLaMo 3 Translate model loaded in LM Studio",
-      "default": "plamo-3-translate-0.8b",
+      "default": "plamo-3-translate-2b",
       "required": false
     },
     {

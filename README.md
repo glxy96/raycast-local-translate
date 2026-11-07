@@ -18,8 +18,8 @@ no-view コマンドの結果は設定の **On Translation Action**（コピー 
 ### 1. モデルを LM Studio に入れる
 
 ```bash
-lms get "https://huggingface.co/pfnet/plamo-3-translate-0.8b-GGUF@Q4_K_M" -y
-lms load plamo-3-translate-0.8b --identifier plamo-3-translate-0.8b -c 8192 -y
+lms get "https://huggingface.co/pfnet/plamo-3-translate-2b-GGUF@Q4_K_M" -y
+lms load plamo-3-translate-2b --identifier plamo-3-translate-2b -c 8192 -y
 lms server start
 ```
 
@@ -28,7 +28,7 @@ MLX 版ではなく **GGUF 版** を使う。
 - MLX 版は同梱の `modeling_plamo_mlx.py` を `trust_remote_code` で読む前提で、LM Studio では動かない
 - LM Studio の API は `chat_template_kwargs` を渡せない。GGUF 版のチャットテンプレートは、先頭の system メッセージに `[plamo-translate]\ntarget_lang=ja` のように書いた設定を解釈してくれる（モデルカード "Specifying settings in a system message"）。本拡張はこの方式で翻訳方向と文体を渡している
 
-より高品質にしたい場合は `plamo-3-translate-2b-GGUF` / `8b-GGUF` に替え、拡張機能の設定 **Model Identifier** を合わせて変更する。
+サイズの選択（M4 / 16GB で比較）: 2B は常駐約 2.2GB・1 文 0.3〜1 秒で、`⌘Y` のような記号混じりの技術文も正しく訳す。0.8B は約 0.6GB・0.1〜0.3 秒と軽いが、記号の前後で訳が崩れることがある。別サイズに替えるときは設定の **Model Identifier** を合わせる。
 
 ### 2. 拡張機能を Raycast に読み込む
 
@@ -44,7 +44,7 @@ Raycast Settings → Extensions → Plamocast で各コマンドにホットキ�
 | 項目 | 既定値 |
 | --- | --- |
 | API Endpoint | `http://localhost:1234/v1` |
-| Model Identifier | `plamo-3-translate-0.8b` |
+| Model Identifier | `plamo-3-translate-2b` |
 | Preferred Source | Selected Text（空ならクリップボード） |
 | On Translation Action | Copy to Clipboard |
 | Japanese Style | Model Default |

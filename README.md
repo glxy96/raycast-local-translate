@@ -4,13 +4,13 @@ Raycast から日英・英日翻訳する拡張機能。既定ではローカル
 
 ## コマンド
 
-| コマンド | モード | 内容 |
-| --- | --- | --- |
-| Translate | view | フォームでライブ翻訳（自動 / →日本語 / →英語、文体指定、原文⇄訳文の入れ替え、⌘Y で全画面） |
-| Translate Auto (JA ⇄ EN) | no-view | 選択テキストの言語を判定して日→英 / 英→日に翻訳 |
-| Translate into Japanese | no-view | 選択テキストを日本語へ |
-| Translate into English | no-view | 選択テキストを英語へ |
-| Choose Model | view | 翻訳に使うモデルを選ぶ |
+| コマンド                 | モード  | 内容                                                                                       |
+| ------------------------ | ------- | ------------------------------------------------------------------------------------------ |
+| Translate                | view    | フォームでライブ翻訳（自動 / →日本語 / →英語、文体指定、原文⇄訳文の入れ替え、⌘Y で全画面） |
+| Translate Auto (JA ⇄ EN) | no-view | 選択テキストの言語を判定して日→英 / 英→日に翻訳                                            |
+| Translate into Japanese  | no-view | 選択テキストを日本語へ                                                                     |
+| Translate into English   | no-view | 選択テキストを英語へ                                                                       |
+| Choose Model             | view    | 翻訳に使うモデルを選ぶ                                                                     |
 
 no-view コマンドの結果は設定の **翻訳後の動作**（コピー / ペースト / Raycast で表示）に従う。「ペースト」にすると、選択したテキストがその場で訳文に置き換わる（例: 日本語で下書き → 選択 → ホットキーで英文に）。
 
@@ -20,10 +20,10 @@ no-view コマンドの結果は設定の **翻訳後の動作**（コピー / �
 
 ### 自動で探すサーバー
 
-| サーバー | 見に行く場所 |
-| --- | --- |
-| LM Studio | `http://localhost:1234/v1` |
-| Ollama | `http://localhost:11434/v1` |
+| サーバー  | 見に行く場所                |
+| --------- | --------------------------- |
+| LM Studio | `http://localhost:1234/v1`  |
+| Ollama    | `http://localhost:11434/v1` |
 
 どちらも**既定のポート**。ポートを変えている場合（LM Studio のサーバー設定や `lms server start --port`、Ollama の `OLLAMA_HOST`）や、別マシン・クラウドのサーバーを使う場合は、設定の **カスタムサーバー: エンドポイント** に手で入れる。`localhost:5678` のように `http://` と `/v1` は省略できる。
 
@@ -35,11 +35,11 @@ no-view コマンドの結果は設定の **翻訳後の動作**（コピー / �
 - OpenAI などのクラウドや、既定ポート以外のサーバーは、設定の **カスタムサーバー** に登録すると一覧に出る
 - 選択は Raycast の LocalStorage に保存される。一番上の「自動（サーバー名 / モデル名）」を選ぶと自動に戻る
 
-| 送り方 | 中身 | ストリーミング |
-| --- | --- | --- |
-| PLaMo 3 Translate | 独自形式の system メッセージ `[plamo-translate]`（PLaMo 3 Translate の GGUF 版チャットテンプレート専用） | ○ |
-| 汎用 LLM | 「訳文だけを出力せよ」という指示プロンプト。設定 **LLM: システムプロンプト** で差し替え可（`{{target}}` → Japanese / English、`{{style}}` → 文体の指示） | ○ |
-| DeepL | DeepL API `/v2/translate` | × |
+| 送り方            | 中身                                                                                                                                                     | ストリーミング |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| PLaMo 3 Translate | 独自形式の system メッセージ `[plamo-translate]`（PLaMo 3 Translate の GGUF 版チャットテンプレート専用）                                                 | ○              |
+| 汎用 LLM          | 「訳文だけを出力せよ」という指示プロンプト。設定 **LLM: システムプロンプト** で差し替え可（`{{target}}` → Japanese / English、`{{style}}` → 文体の指示） | ○              |
+| DeepL             | DeepL API `/v2/translate`                                                                                                                                | ×              |
 
 文体（です・ます / だ・である）は PLaMo では `form`、汎用 LLM ではプロンプト、DeepL では `formality` に変換して渡す。
 
@@ -62,10 +62,16 @@ MLX 版ではなく **GGUF 版** を使う。
 
 ### 2. 拡張機能を Raycast に読み込む
 
+Raycast Store には出していないので、ソースから入れる。Node.js 22 以上が必要。
+
 ```bash
+git clone https://github.com/glxy96/raycast-local-translate.git
+cd raycast-local-translate
 npm install
 npm run dev   # Raycast に開発版として登録される。登録後は Ctrl+C で止めても残る
 ```
+
+更新するときは `git pull` してからもう一度 `npm run dev`。
 
 Raycast Settings → Extensions → Local Translate で各コマンドにホットキーを割り当てる。
 
@@ -73,7 +79,7 @@ Raycast Settings → Extensions → Local Translate で各コマンドにホッ�
 
 ```bash
 npm test          # ユニットテスト（Vitest。@raycast/api は test/raycast-api.ts の代替実装に差し替え）
-npm run lint      # ESLint + Prettier
+npm run lint      # ESLint + Prettier（Store 向けの ray lint は使わない）
 npm run typecheck
 ```
 
@@ -81,14 +87,14 @@ npm run typecheck
 
 どれも任意。
 
-| 項目 | 用途 |
-| --- | --- |
+| 項目                                        | 用途                                                                               |
+| ------------------------------------------- | ---------------------------------------------------------------------------------- |
 | カスタムサーバー: エンドポイント / API キー | 自動検出されないサーバー（OpenAI、OpenRouter、別マシンなど）を Choose Model に出す |
-| DeepL: API キー | DeepL を使う。Free プランのキーは `:fx` で終わり、自動で Free 用 API に送る |
-| LLM: システムプロンプト | 汎用 LLM 向けプロンプトの差し替え |
-| 入力元 | 選択テキスト（空ならクリップボード） |
-| 翻訳後の動作 | コピー / 最前面のアプリにペースト / Raycast で表示 |
-| 日本語の文体 | モデルに任せる / です・ます / だ・である |
+| DeepL: API キー                             | DeepL を使う。Free プランのキーは `:fx` で終わり、自動で Free 用 API に送る        |
+| LLM: システムプロンプト                     | 汎用 LLM 向けプロンプトの差し替え                                                  |
+| 入力元                                      | 選択テキスト（空ならクリップボード）                                               |
+| 翻訳後の動作                                | コピー / 最前面のアプリにペースト / Raycast で表示                                 |
+| 日本語の文体                                | モデルに任せる / です・ます / だ・である                                           |
 
 API キーは Raycast のパスワード型設定として保存される（Raycast の暗号化ストア）。
 

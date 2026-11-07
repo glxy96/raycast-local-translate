@@ -21,7 +21,9 @@ describe("getBackend", () => {
     await setSelection({ kind: "model", endpoint, model: "gemma-4-26b" });
     const requests = mockFetch(() => json({ choices: [{ message: { content: "x" } }] }));
     await translate("a", { target: "en" });
-    expect((requests[0].body.messages as { content: string }[])[0].content).toMatch(/^You are a professional translator/);
+    expect((requests[0].body.messages as { content: string }[])[0].content).toMatch(
+      /^You are a professional translator/,
+    );
   });
 
   it("selects DeepL", async () => {
@@ -33,7 +35,12 @@ describe("getBackend", () => {
   it("auto-detects PLaMo when nothing is selected", async () => {
     mockFetch((req) =>
       req.url === "http://localhost:1234/api/v0/models"
-        ? json({ data: [{ id: "gemma-4-26b", type: "llm", state: "loaded" }, { id: "plamo-3-translate-2b", type: "llm" }] })
+        ? json({
+            data: [
+              { id: "gemma-4-26b", type: "llm", state: "loaded" },
+              { id: "plamo-3-translate-2b", type: "llm" },
+            ],
+          })
         : Promise.reject(new TypeError("fetch failed")),
     );
     expect((await getBackend()).name).toBe("plamo-3-translate-2b");

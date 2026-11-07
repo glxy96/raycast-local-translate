@@ -179,8 +179,8 @@
   "scripts": {
     "build": "ray build",
     "dev": "ray develop",
-    "fix-lint": "ray lint --fix",
-    "lint": "ray lint",
+    "fix-lint": "eslint . --fix && prettier --write .",
+    "lint": "eslint . && prettier --check .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   }

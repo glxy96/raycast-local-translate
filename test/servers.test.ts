@@ -1,5 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { getServers, isPlamoModel, listModels, normalizeEndpoint, pickPlamoModel, type ModelInfo } from "../src/lib/servers";
+import {
+  getServers,
+  isPlamoModel,
+  listModels,
+  normalizeEndpoint,
+  pickPlamoModel,
+  type ModelInfo,
+} from "../src/lib/servers";
 import { json, mockFetch } from "./fetch";
 import { preferences, resetRaycast } from "./raycast-api";
 
@@ -62,9 +69,9 @@ describe("pickPlamoModel", () => {
   });
 
   it("otherwise prefers the smallest", () => {
-    expect(pickPlamoModel([m("plamo-3-translate-8b"), m("plamo-3-translate-0.8b"), m("plamo-3-translate-2b")])?.id).toBe(
-      "plamo-3-translate-0.8b",
-    );
+    expect(
+      pickPlamoModel([m("plamo-3-translate-8b"), m("plamo-3-translate-0.8b"), m("plamo-3-translate-2b")])?.id,
+    ).toBe("plamo-3-translate-0.8b");
   });
 
   it("ignores other models", () => {
@@ -89,10 +96,15 @@ describe("listModels", () => {
 
   it("falls back to /v1/models for other servers", async () => {
     const requests = mockFetch((req) =>
-      req.url.endsWith("/api/v0/models") ? json({}, 404) : json({ data: [{ id: "llama3.2" }, { id: "nomic-embed-text" }] }),
+      req.url.endsWith("/api/v0/models")
+        ? json({}, 404)
+        : json({ data: [{ id: "llama3.2" }, { id: "nomic-embed-text" }] }),
     );
     expect(await listModels(server)).toEqual([{ id: "llama3.2", server }]);
-    expect(requests.map((r) => r.url)).toEqual(["http://localhost:1234/api/v0/models", "http://localhost:1234/v1/models"]);
+    expect(requests.map((r) => r.url)).toEqual([
+      "http://localhost:1234/api/v0/models",
+      "http://localhost:1234/v1/models",
+    ]);
   });
 
   it("returns [] when the server is down", async () => {

@@ -76,7 +76,9 @@ describe("PLaMo 3 Translate", () => {
 
 describe("general LLM", () => {
   it("builds the prompt from the template", () => {
-    expect(buildPrompt("Into {{target}}. {{style}}", "ja", "plain")).toBe("Into Japanese. Use the plain da/dearu style.");
+    expect(buildPrompt("Into {{target}}. {{style}}", "ja", "plain")).toBe(
+      "Into Japanese. Use the plain da/dearu style.",
+    );
     expect(buildPrompt("Into {{target}}. {{style}}", "en", "plain")).toBe("Into English.");
   });
 

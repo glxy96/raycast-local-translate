@@ -24,7 +24,7 @@ no-view コマンドの結果は設定の **On Translation Action**（コピー 
 - 選んだモデルの名前に `plamo-3-translate` が含まれていれば PLaMo 3 Translate 専用の送り方、それ以外は汎用 LLM 向けの送り方を自動で使い分ける
 - DeepL は設定に API キーを入れると選べる
 - OpenAI などのクラウドや、既定ポート以外のサーバーは、設定の **Custom Server** に登録すると一覧に出る
-- 選択は Raycast の LocalStorage に保存される。「PLaMo 3 Translate を自動検出」を選ぶと自動に戻る
+- 選択は Raycast の LocalStorage に保存される。一番上の「自動（サーバー名 / モデル名）」を選ぶと自動に戻る
 
 | 送り方 | 中身 | ストリーミング |
 | --- | --- | --- |

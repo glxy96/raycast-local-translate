@@ -32,13 +32,12 @@ export default function Command() {
   });
   // Derived from the same listing, so opening this view probes each server only once.
   const autoPick = models ? pickPlamoModel([...models.values()].flat()) : undefined;
-  const autoSubtitle = !autoPick
-    ? models
-      ? "見つかっていません"
-      : ""
-    : current
-      ? `選ぶと ${autoPick.id} を使います`
-      : `使用中: ${autoPick.id}`;
+  // Same "server / model" wording as the rest of the list; the checkmark alone tells what is in use.
+  const autoTitle = autoPick
+    ? `自動（${autoPick.server.name} / ${autoPick.id}）`
+    : models
+      ? "自動（PLaMo 3 Translate が見つかりません）"
+      : "自動";
 
   async function choose(selection: Selection | undefined, label: string) {
     await setSelection(selection);
@@ -90,8 +89,7 @@ export default function Command() {
     <List isLoading={isLoading} searchBarPlaceholder="モデルを検索">
       <List.Section title="自動">
         <List.Item
-          title="PLaMo 3 Translate を自動検出"
-          subtitle={autoSubtitle}
+          title={autoTitle}
           icon={Icon.Wand}
           accessories={current ? [] : [checkmark(undefined)]}
           actions={

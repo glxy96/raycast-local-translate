@@ -1,6 +1,6 @@
 import { Action, ActionPanel, Form, getPreferenceValues, Icon, Keyboard, type LaunchProps } from "@raycast/api";
 import { showFailureToast } from "@raycast/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TranslationDetail } from "./components/translation-detail";
 import { detectTargetLang } from "./lib/detect";
 import type { TranslateLaunchContext } from "./lib/quick-translate";
@@ -18,6 +18,9 @@ export default function Command({ launchContext }: LaunchProps<{ launchContext?:
   const [form, setForm] = useState<JapaneseForm>(prefs.japaneseForm as JapaneseForm);
   const [translation, setTranslation] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  // Raycast leaves no field focused after popping back from a pushed view, which makes
+  // action shortcuts (⌘Y, ⌘K, …) dead until the user clicks a field. Refocus on pop.
+  const translationRef = useRef<Form.TextArea>(null);
 
   // Prefill from the selection / clipboard unless another command handed us the text.
   useEffect(() => {
@@ -76,6 +79,7 @@ export default function Command({ launchContext }: LaunchProps<{ launchContext?:
             icon={Icon.Maximize}
             shortcut={Keyboard.Shortcut.Common.ToggleQuickLook}
             target={<TranslationDetail source={text} translation={translation} target={resolved} />}
+            onPop={() => translationRef.current?.focus()}
           />
           <Action
             title="Swap Source and Translation"
@@ -90,6 +94,7 @@ export default function Command({ launchContext }: LaunchProps<{ launchContext?:
       <Form.TextArea id="text" title="原文" placeholder="翻訳するテキスト" value={text} onChange={setText} />
       <Form.TextArea
         id="translation"
+        ref={translationRef}
         title="訳文"
         info="⌘Y で全画面表示"
         value={translation}

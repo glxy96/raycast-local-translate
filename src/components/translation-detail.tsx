@@ -1,10 +1,17 @@
 import { Action, ActionPanel, Detail } from "@raycast/api";
 import { LANG_LABEL, type Lang } from "../lib/translate";
 
-/** Render plain text verbatim in Markdown: escape syntax and keep single line breaks. */
-function toMarkdown(text: string): string {
+/**
+ * Render plain text in Markdown while keeping it readable.
+ *
+ * Escape only what would visibly mangle prose (emphasis, code spans, HTML, tables, headings).
+ * Do NOT escape brackets: Raycast renders `\(…\)` / `\[…\]` as LaTeX math.
+ * Lists ("- ", "1. ") are intentionally left to render as lists.
+ */
+export function toMarkdown(text: string): string {
   return text
-    .replace(/([\\`*_{}[\]()#+\-.!|<>~])/g, "\\$1")
+    .replace(/([\\`*_~$<|])/g, "\\$1")
+    .replace(/^(\s*)#/gm, "$1\\#")
     .split("\n")
     .join("  \n");
 }

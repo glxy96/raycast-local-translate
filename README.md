@@ -16,7 +16,7 @@ no-view コマンドの結果は設定の **翻訳後の動作**（コピー / �
 
 ## モデルの選び方
 
-**何も設定しなくても動く。** LM Studio（`localhost:1234`）と Ollama（`localhost:11434`）を自動で探し、PLaMo 3 Translate が見つかればそれを使う（ロード済みのものを優先、なければ小さい＝速いもの）。
+LM Studio か Ollama に PLaMo 3 Translate を入れて起動しておけば、拡張機能側の設定は不要。LM Studio（`localhost:1234`）と Ollama（`localhost:11434`）を自動で探し、PLaMo 3 Translate が見つかればそれを使う（ロード済みのものを優先、なければ小さい＝速いもの）。
 
 ### 自動で探すサーバー
 

@@ -1,6 +1,7 @@
 import { Action, ActionPanel, Form, getPreferenceValues, Icon, Keyboard, type LaunchProps } from "@raycast/api";
 import { showFailureToast } from "@raycast/utils";
 import { useEffect, useState } from "react";
+import { TranslationDetail } from "./components/translation-detail";
 import { detectTargetLang } from "./lib/detect";
 import type { TranslateLaunchContext } from "./lib/quick-translate";
 import { readSourceText } from "./lib/source";
@@ -70,6 +71,12 @@ export default function Command({ launchContext }: LaunchProps<{ launchContext?:
         <ActionPanel>
           <Action.CopyToClipboard title="Copy Translation" content={translation} />
           <Action.Paste title="Paste Translation" content={translation} />
+          <Action.Push
+            title="Show Translation in Full View"
+            icon={Icon.Maximize}
+            shortcut={Keyboard.Shortcut.Common.ToggleQuickLook}
+            target={<TranslationDetail source={text} translation={translation} target={resolved} />}
+          />
           <Action
             title="Swap Source and Translation"
             icon={Icon.Switch}
@@ -81,8 +88,19 @@ export default function Command({ launchContext }: LaunchProps<{ launchContext?:
       }
     >
       <Form.TextArea id="text" title="原文" placeholder="翻訳するテキスト" value={text} onChange={setText} />
+      <Form.TextArea
+        id="translation"
+        title="訳文"
+        info="⌘Y で全画面表示"
+        value={translation}
+        onChange={setTranslation}
+      />
       <Form.Dropdown id="target" title="翻訳先" value={target} onChange={(v) => setTarget(v as Target)}>
-        <Form.Dropdown.Item value="auto" title="自動 (日 ⇄ 英)" icon={Icon.Wand} />
+        <Form.Dropdown.Item
+          value="auto"
+          title={`自動（${LANG_LABEL[sourceLang]} → ${LANG_LABEL[resolved]}）`}
+          icon={Icon.Wand}
+        />
         <Form.Dropdown.Item value="ja" title="日本語へ" />
         <Form.Dropdown.Item value="en" title="英語へ" />
       </Form.Dropdown>
@@ -93,8 +111,6 @@ export default function Command({ launchContext }: LaunchProps<{ launchContext?:
           <Form.Dropdown.Item value="plain" title="だ・である" />
         </Form.Dropdown>
       )}
-      <Form.Description title="方向" text={`${LANG_LABEL[sourceLang]} → ${LANG_LABEL[resolved]}`} />
-      <Form.TextArea id="translation" title="訳文" value={translation} onChange={setTranslation} />
     </Form>
   );
 }

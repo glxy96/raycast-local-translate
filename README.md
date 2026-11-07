@@ -12,7 +12,7 @@ Raycast から日英・英日翻訳する拡張機能。既定ではローカル
 | Translate into English | no-view | 選択テキストを英語へ |
 | Choose Model | view | 翻訳に使うモデルを選ぶ |
 
-no-view コマンドの結果は設定の **On Translation Action**（コピー / ペースト / Raycast で表示）に従う。
+no-view コマンドの結果は設定の **翻訳後の動作**（コピー / ペースト / Raycast で表示）に従う。「ペースト」にすると、選択したテキストがその場で訳文に置き換わる（例: 日本語で下書き → 選択 → ホットキーで英文に）。
 
 ## モデルの選び方
 
@@ -23,13 +23,13 @@ no-view コマンドの結果は設定の **On Translation Action**（コピー 
 - ローカルのサーバーにあるモデルが一覧で出る（LM Studio はロード状態も表示、埋め込みモデルは除外）
 - 選んだモデルの名前に `plamo-3-translate` が含まれていれば PLaMo 3 Translate 専用の送り方、それ以外は汎用 LLM 向けの送り方を自動で使い分ける
 - DeepL は設定に API キーを入れると選べる
-- OpenAI などのクラウドや、既定ポート以外のサーバーは、設定の **Custom Server** に登録すると一覧に出る
+- OpenAI などのクラウドや、既定ポート以外のサーバーは、設定の **カスタムサーバー** に登録すると一覧に出る
 - 選択は Raycast の LocalStorage に保存される。一番上の「自動（サーバー名 / モデル名）」を選ぶと自動に戻る
 
 | 送り方 | 中身 | ストリーミング |
 | --- | --- | --- |
 | PLaMo 3 Translate | 独自形式の system メッセージ `[plamo-translate]`（PLaMo 3 Translate の GGUF 版チャットテンプレート専用） | ○ |
-| 汎用 LLM | 「訳文だけを出力せよ」という指示プロンプト。設定 **LLM: System Prompt** で差し替え可（`{{target}}` → Japanese / English、`{{style}}` → 文体の指示） | ○ |
+| 汎用 LLM | 「訳文だけを出力せよ」という指示プロンプト。設定 **LLM: システムプロンプト** で差し替え可（`{{target}}` → Japanese / English、`{{style}}` → 文体の指示） | ○ |
 | DeepL | DeepL API `/v2/translate` | × |
 
 文体（です・ます / だ・である）は PLaMo では `form`、汎用 LLM ではプロンプト、DeepL では `formality` に変換して渡す。
@@ -60,18 +60,26 @@ npm run dev   # Raycast に開発版として登録される。登録後は Ctrl
 
 Raycast Settings → Extensions → Plamocast で各コマンドにホットキーを割り当てる。
 
+### 開発
+
+```bash
+npm test          # ユニットテスト（Vitest。@raycast/api は test/raycast-api.ts の代替実装に差し替え）
+npm run lint      # ESLint + Prettier
+npm run typecheck
+```
+
 ## 設定
 
 どれも任意。
 
 | 項目 | 用途 |
 | --- | --- |
-| Custom Server: Endpoint / API Key | 自動検出されないサーバー（OpenAI、OpenRouter、別マシンなど）を Choose Model に出す |
-| DeepL: API Key | DeepL を使う。Free プランのキーは `:fx` で終わり、自動で Free 用 API に送る |
-| LLM: System Prompt | 汎用 LLM 向けプロンプトの差し替え |
-| Preferred Source | Selected Text（空ならクリップボード） |
-| On Translation Action | Copy to Clipboard / Paste / View |
-| Japanese Style | Model Default / です・ます / だ・である |
+| カスタムサーバー: エンドポイント / API キー | 自動検出されないサーバー（OpenAI、OpenRouter、別マシンなど）を Choose Model に出す |
+| DeepL: API キー | DeepL を使う。Free プランのキーは `:fx` で終わり、自動で Free 用 API に送る |
+| LLM: システムプロンプト | 汎用 LLM 向けプロンプトの差し替え |
+| 入力元 | 選択テキスト（空ならクリップボード） |
+| 翻訳後の動作 | コピー / 最前面のアプリにペースト / Raycast で表示 |
+| 日本語の文体 | モデルに任せる / です・ます / だ・である |
 
 API キーは Raycast のパスワード型設定として保存される（Raycast の暗号化ストア）。
 
@@ -82,4 +90,6 @@ API キーは Raycast のパスワード型設定として保存される（Rayc
 
 ## License
 
-拡張機能のコードは MIT。モデルは [PLaMo Community License](https://plamo.preferredai.jp/info/plamo-community-license-en)（個人・非商用は無償）。
+この拡張機能のコードは [MIT License](LICENSE)。
+
+翻訳に使うモデルやサービス（PLaMo 3 Translate、その他の LLM、DeepL など）は、それぞれの利用規約・ライセンスに従う。利用前に各モデル・サービスのライセンスを確認すること。

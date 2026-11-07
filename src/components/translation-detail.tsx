@@ -1,21 +1,7 @@
 import { Action, ActionPanel, Detail } from "@raycast/api";
 import { useLiveTranslation } from "../lib/live-translation";
+import { toMarkdown } from "../lib/markdown";
 import { LANG_LABEL, type Lang } from "../lib/translate";
-
-/**
- * Render plain text in Markdown while keeping it readable.
- *
- * Escape only what would visibly mangle prose (emphasis, code spans, HTML, tables, headings).
- * Do NOT escape brackets: Raycast renders `\(…\)` / `\[…\]` as LaTeX math.
- * Lists ("- ", "1. ") are intentionally left to render as lists.
- */
-export function toMarkdown(text: string): string {
-  return text
-    .replace(/([\\`*_~$<|])/g, "\\$1")
-    .replace(/^(\s*)#/gm, "$1\\#")
-    .split("\n")
-    .join("  \n");
-}
 
 /** Full-window, scrollable view of a translation — the Form's text area is too short for long text. */
 export function TranslationDetail() {
@@ -32,9 +18,9 @@ export function TranslationDetail() {
       markdown={markdown}
       actions={
         <ActionPanel>
-          <Action.CopyToClipboard title="Copy Translation" content={translation} />
-          <Action.Paste title="Paste Translation" content={translation} />
-          <Action.CopyToClipboard title="Copy Source Text" content={source} />
+          <Action.CopyToClipboard title="訳文をコピー" content={translation} />
+          <Action.Paste title="訳文をペースト" content={translation} />
+          <Action.CopyToClipboard title="原文をコピー" content={source} />
         </ActionPanel>
       }
     />

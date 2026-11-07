@@ -57,14 +57,14 @@ export default function Command() {
         title={model.id}
         icon={plamo ? Icon.Stars : Icon.SpeechBubble}
         accessories={[
-          ...(model.loaded ? [{ tag: { value: "Loaded", color: Color.Green } }] : []),
+          ...(model.loaded ? [{ tag: { value: "ロード済み", color: Color.Green } }] : []),
           { tag: plamo ? { value: "PLaMo", color: Color.Purple } : { value: "LLM", color: Color.SecondaryText } },
           ...(sameSelection(current, selection) ? [checkmark(selection)] : []),
         ]}
         actions={
           <ActionPanel>
-            <Action title="Use This Model" icon={Icon.Check} onAction={() => choose(selection, model.id)} />
-            <Action.CopyToClipboard title="Copy Model Identifier" content={model.id} />
+            <Action title="このモデルを使う" icon={Icon.Check} onAction={() => choose(selection, model.id)} />
+            <Action.CopyToClipboard title="モデル名をコピー" content={model.id} />
           </ActionPanel>
         }
       />
@@ -94,7 +94,7 @@ export default function Command() {
           accessories={current ? [] : [checkmark(undefined)]}
           actions={
             <ActionPanel>
-              <Action title="Use Auto-Detect" icon={Icon.Check} onAction={() => choose(undefined, "自動検出")} />
+              <Action title="自動検出を使う" icon={Icon.Check} onAction={() => choose(undefined, "自動検出")} />
             </ActionPanel>
           }
         />
@@ -109,9 +109,9 @@ export default function Command() {
           actions={
             <ActionPanel>
               {deeplApiKey ? (
-                <Action title="Use DeepL" icon={Icon.Check} onAction={() => choose({ kind: "deepl" }, "DeepL")} />
+                <Action title="DeepL を使う" icon={Icon.Check} onAction={() => choose({ kind: "deepl" }, "DeepL")} />
               ) : (
-                <Action title="Set DeepL API Key" icon={Icon.Key} onAction={openExtensionPreferences} />
+                <Action title="DeepL の API キーを設定" icon={Icon.Key} onAction={openExtensionPreferences} />
               )}
             </ActionPanel>
           }
@@ -122,7 +122,7 @@ export default function Command() {
           icon={Icon.Plus}
           actions={
             <ActionPanel>
-              <Action title="Open Extension Preferences" icon={Icon.Gear} onAction={openExtensionPreferences} />
+              <Action title="設定を開く" icon={Icon.Gear} onAction={openExtensionPreferences} />
             </ActionPanel>
           }
         />
